@@ -22,30 +22,29 @@
     height: 100vh;
     object-fit: cover;
   }
+.light {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 150px;
+  cursor: pointer;
+  animation: floatGlow 2s ease-in-out infinite;
+}
 
-  .light {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    cursor: pointer;
-    animation: glow 2s ease-in-out infinite;
+.light img {
+  width: 100%;
+  display: block;
+}
+
+@keyframes floatGlow {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
   }
 
-  .light img {
-    width: 100%;
-    display: block;
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
   }
-
-  @keyframes glow {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.08);
-    }
-  }
+}
   </style>
 </head>
 
