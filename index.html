@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,46 +6,54 @@
   <title>♡</title>
 
   <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  body {
-    overflow: hidden;
-    background: black;
-  }
+    body {
+      overflow: hidden;
+      background: black;
+      width: 100%;
+      height: 100%;
+    }
 
-  video {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-  }
-.light {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: 150px;
-  cursor: pointer;
-  animation: floatGlow 2s ease-in-out infinite;
-}
+    video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
 
-.light img {
-  width: 100%;
-  display: block;
-}
+    .light {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      width: 150px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      cursor: pointer;
+      animation: floatGlow 2s ease-in-out infinite;
+    }
 
-@keyframes floatGlow {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
+    .light img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
 
-  50% {
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-}
+    @keyframes floatGlow {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.08);
+      }
+    }
   </style>
 </head>
 
@@ -55,7 +64,7 @@
   </video>
 
   <a href="page2.html" class="light">
-    <img src="Home_20261010_211441_0000.png" alt="glowing light">
+    <img src="Home_20261010_211441_0000.png" alt="Glowing light">
   </a>
 
 </body>
