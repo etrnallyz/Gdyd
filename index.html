@@ -23,6 +23,49 @@
       object-fit: cover;
     }
   </style>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow: hidden;
+    background: black;
+  }
+
+  video {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
+
+  .light {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    cursor: pointer;
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .light img {
+    width: 100%;
+    display: block;
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+  }
+  </style>
 </head>
 
 <body>
@@ -30,6 +73,10 @@
   <video autoplay muted loop playsinline>
     <source src="lv_0_20261010210354.mp4" type="video/mp4">
   </video>
+
+  <a href="page2.html" class="light">
+    <img src="Home_20261010_211441_0000.png" alt="glowing light">
+  </a>
 
 </body>
 </html>
