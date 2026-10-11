@@ -1,0 +1,503 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>♡</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* =====================================
+       MASTER CANVAS: 2560 × 1440
+    ===================================== */
+
+    #viewport {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #canvas {
+      position: absolute;
+      width: 2560px;
+      height: 1440px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: center center;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .full-canvas {
+      position: absolute;
+      inset: 0;
+      width: 2560px;
+      height: 1440px;
+      display: block;
+      object-fit: fill;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* =====================================
+       POND SCENE
+    ===================================== */
+
+    #pond-scene {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    #pond-background {
+      z-index: 1;
+    }
+
+    /* These images remain full-canvas.
+       Do not resize or reposition them. */
+
+    .scene-decoration {
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Invisible clickable areas */
+    .hotspot {
+      position: absolute;
+      z-index: 5;
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hotspot:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.9);
+      outline-offset: 5px;
+      border-radius: 8px;
+    }
+
+    #boat-hotspot {
+      left: 550px;
+      top: 1008px;
+      width: 525px;
+      height: 272px;
+    }
+
+    #mixtape-hotspot {
+      left: 240px;
+      top: 900px;
+      width: 160px;
+      height: 110px;
+    }
+
+    #mp3-hotspot {
+      left: 1740px;
+      top: 920px;
+      width: 260px;
+      height: 140px;
+    }
+
+    /* =====================================
+       LETTER OVERLAY
+    ===================================== */
+
+    #letter-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      overflow: hidden;
+      background: #000;
+      opacity: 0;
+    }
+
+    #letter-overlay.open {
+      display: block;
+      animation: overlayFadeIn 0.45s ease forwards;
+    }
+
+    #letter-background {
+      z-index: 0;
+    }
+
+    #letter-paper {
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /*
+      Text area matches your measurements:
+      X 620, Y 290, width 1260, height 940.
+    */
+
+    #letter-text-scroll {
+      position: absolute;
+      left: 620px;
+      top: 290px;
+      width: 1260px;
+      height: 940px;
+
+      z-index: 2;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+
+      padding: 24px 36px 60px;
+      color: #44372f;
+      font-size: 28px;
+      line-height: 1.75;
+      text-align: left;
+
+      scrollbar-width: thin;
+      scrollbar-color: rgba(95, 73, 57, 0.45) transparent;
+    }
+
+    #letter-text-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #letter-text-scroll::-webkit-scrollbar-thumb {
+      background: rgba(95, 73, 57, 0.45);
+      border-radius: 8px;
+    }
+
+    #letter-copy {
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      min-height: 100%;
+    }
+
+    #letter-copy p {
+      margin-bottom: 1.2em;
+    }
+
+    #letter-copy .signature {
+      margin-top: 2em;
+    }
+
+    /* Close button */
+    #close-letter {
+      position: absolute;
+      z-index: 10;
+      top: 45px;
+      right: 55px;
+
+      width: 76px;
+      height: 76px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 50%;
+      background: rgba(20, 20, 20, 0.55);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 44px;
+      line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    #close-letter:hover {
+      background: rgba(20, 20, 20, 0.85);
+      transform: scale(1.06);
+    }
+
+    /* Letter opening animation */
+    @keyframes overlayFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #letter-overlay.open #letter-paper {
+      animation: letterPop 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes letterPop {
+      from {
+        opacity: 0.6;
+        transform: scale(0.985);
+        transform-origin: center center;
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="viewport">
+    <main id="canvas">
+
+      <!-- =================================
+           POND SCENE
+      ================================== -->
+
+      <section id="pond-scene" aria-label="Pond scene">
+
+        <!-- Background with decorations -->
+        <img
+          id="pond-background"
+          class="full-canvas"
+          src="page2bgwithdesign.png"
+          alt=""
+          draggable="false"
+        >
+
+        <!-- Full-canvas artwork: original positions preserved -->
+        <img
+          id="boat-image"
+          class="full-canvas scene-decoration"
+          src="paperboat.png"
+          alt=""
+          draggable="false"
+        >
+
+        <img
+          id="mixtape-image"
+          class="full-canvas scene-decoration"
+          src="mixtape.png"
+          alt=""
+          draggable="false"
+        >
+
+        <img
+          id="mp3-image"
+          class="full-canvas scene-decoration"
+          src="mp3player.png"
+          alt=""
+          draggable="false"
+        >
+
+        <!-- Clickable regions -->
+        <button
+          id="boat-hotspot"
+          class="hotspot"
+          type="button"
+          aria-label="Open the letter"
+        ></button>
+
+        <button
+          id="mixtape-hotspot"
+          class="hotspot"
+          type="button"
+          aria-label="Open the mixtape playlist"
+        ></button>
+
+        <button
+          id="mp3-hotspot"
+          class="hotspot"
+          type="button"
+          aria-label="Open the MP3 player playlist"
+        ></button>
+
+      </section>
+
+      <!-- =================================
+           LETTER VIEW
+      ================================== -->
+
+      <section
+        id="letter-overlay"
+        aria-label="Letter"
+        aria-hidden="true"
+      >
+
+        <!-- Pond background without decorations -->
+        <img
+          id="letter-background"
+          class="full-canvas"
+          src="page2bg.png"
+          alt=""
+          draggable="false"
+        >
+
+        <!-- Letter paper artwork -->
+        <img
+          id="letter-paper"
+          class="full-canvas"
+          src="blankletter.png"
+          alt=""
+          draggable="false"
+        >
+
+        <!-- Replace sample text with your real letter -->
+        <div id="letter-text-scroll">
+          <div id="letter-copy">
+
+            <p>Dear [NAME],</p>
+
+            <p>
+              Replace this sample text with your actual letter.
+              You can add as many paragraphs as you need.
+              The text area will scroll when the letter is longer
+              than the available space.
+            </p>
+
+            <p>
+              Continue your letter here.
+            </p>
+
+            <p class="signature">
+              With love,<br>
+              [YOUR SIGNATURE]
+            </p>
+
+          </div>
+        </div>
+
+        <button
+          id="close-letter"
+          type="button"
+          aria-label="Close letter"
+        >×</button>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    /* =====================================
+       CANVAS SCALING
+       Preserves the 2560 × 1440 proportions.
+       We'll refine mobile behavior later.
+    ===================================== */
+
+    const canvas = document.getElementById("canvas");
+
+    function scaleCanvas() {
+      const scaleX = window.innerWidth / 2560;
+      const scaleY = window.innerHeight / 1440;
+      const scale = Math.min(scaleX, scaleY);
+
+      canvas.style.transform =
+        `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    window.addEventListener("resize", scaleCanvas);
+    scaleCanvas();
+
+    /* =====================================
+       SPOTIFY LINKS
+       Add the real playlist URLs later.
+    ===================================== */
+
+    const MIXTAPE_PLAYLIST_URL = "";
+    const MP3_PLAYLIST_URL = "";
+
+    function openPlaylist(url) {
+      if (!url) {
+        console.log("Add this Spotify playlist URL when ready.");
+        return;
+      }
+
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    /* =====================================
+       LETTER OPEN / CLOSE
+    ===================================== */
+
+    const letterOverlay = document.getElementById("letter-overlay");
+    const letterScroll = document.getElementById("letter-text-scroll");
+    const letterCopy = document.getElementById("letter-copy");
+
+    document.getElementById("boat-hotspot").addEventListener(
+      "click",
+      openLetter
+    );
+
+    document.getElementById("mixtape-hotspot").addEventListener(
+      "click",
+      () => openPlaylist(MIXTAPE_PLAYLIST_URL)
+    );
+
+    document.getElementById("mp3-hotspot").addEventListener(
+      "click",
+      () => openPlaylist(MP3_PLAYLIST_URL)
+    );
+
+    function openLetter() {
+      letterOverlay.style.display = "block";
+      letterOverlay.setAttribute("aria-hidden", "false");
+
+      // Restart the opening animation every time.
+      letterOverlay.classList.remove("open");
+      void letterOverlay.offsetWidth;
+      letterOverlay.classList.add("open");
+
+      letterScroll.scrollTop = 0;
+    }
+
+    function closeLetter() {
+      letterOverlay.classList.remove("open");
+      letterOverlay.setAttribute("aria-hidden", "true");
+
+      window.setTimeout(() => {
+        if (!letterOverlay.classList.contains("open")) {
+          letterOverlay.style.display = "none";
+        }
+      }, 450);
+    }
+
+    document.getElementById("close-letter").addEventListener(
+      "click",
+      closeLetter
+    );
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        letterOverlay.classList.contains("open")
+      ) {
+        closeLetter();
+      }
+    });
+
+    /* Warn if an asset filename is incorrect. */
+
+    document.querySelectorAll("img").forEach((img) => {
+      img.addEventListener("error", () => {
+        console.error("Image failed to load:", img.getAttribute("src"));
+      });
+    });
+  </script>
+</body>
+  </html>
+  
