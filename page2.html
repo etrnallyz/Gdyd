@@ -7,6 +7,11 @@
   <meta name="theme-color" content="#000000">
   <title>♡</title>
 
+  <!-- Lato Light font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -76,7 +81,7 @@
       pointer-events: none;
     }
 
-    /* Invisible clickable areas */
+    /* INVISIBLE CLICKABLE AREAS */
 
     .hotspot {
       position: absolute;
@@ -142,7 +147,7 @@
       pointer-events: none;
     }
 
-    /* Letter text area */
+    /* LETTER TEXT — LATO LIGHT, PURE BLACK */
 
     #letter-text-scroll {
       position: absolute;
@@ -158,13 +163,17 @@
       -webkit-overflow-scrolling: touch;
 
       padding: 24px 36px 60px;
-      color: #44372f;
+
+      font-family: "Lato", sans-serif;
+      font-weight: 300;
       font-size: 28px;
       line-height: 1.75;
+      color: #000000;
+
       text-align: left;
 
       scrollbar-width: thin;
-      scrollbar-color: rgba(95, 73, 57, 0.45) transparent;
+      scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
     }
 
     #letter-text-scroll::-webkit-scrollbar {
@@ -172,7 +181,7 @@
     }
 
     #letter-text-scroll::-webkit-scrollbar-thumb {
-      background: rgba(95, 73, 57, 0.45);
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 8px;
     }
 
@@ -180,6 +189,9 @@
       white-space: pre-wrap;
       overflow-wrap: break-word;
       min-height: 100%;
+      color: #000000;
+      font-family: "Lato", sans-serif;
+      font-weight: 300;
     }
 
     #letter-copy p {
@@ -190,7 +202,7 @@
       margin-top: 2em;
     }
 
-    /* Close button */
+    /* CLOSE BUTTON */
 
     #close-letter {
       position: absolute;
@@ -217,7 +229,7 @@
       transform: scale(1.06);
     }
 
-    /* Opening animations */
+    /* ANIMATIONS */
 
     @keyframes overlayFadeIn {
       from {
@@ -295,7 +307,7 @@
           draggable="false"
         >
 
-        <!-- Clickable areas -->
+        <!-- CLICKABLE AREAS -->
 
         <button
           id="boat-hotspot"
@@ -344,7 +356,7 @@
           draggable="false"
         >
 
-        <!-- Replace this sample with your actual letter -->
+        <!-- REPLACE THIS SAMPLE WITH YOUR ACTUAL LETTER -->
 
         <div id="letter-text-scroll">
           <div id="letter-copy">
@@ -382,7 +394,7 @@
   </div>
 
   <script>
-    /* CANVAS SCALING */
+    /* CANVAS SCALING — FILL THE SCREEN */
 
     const canvas = document.getElementById("canvas");
 
@@ -390,7 +402,6 @@
       const scaleX = window.innerWidth / 2560;
       const scaleY = window.innerHeight / 1440;
 
-      // Fill the screen in both directions.
       canvas.style.transform =
         `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
     }
@@ -400,13 +411,13 @@
 
     /* SPOTIFY LINKS */
 
-    // Add your real playlist URLs when ready.
+    // Replace these empty strings with your actual playlist URLs.
     const MIXTAPE_PLAYLIST_URL = "";
     const MP3_PLAYLIST_URL = "";
 
     function openPlaylist(url) {
       if (!url) {
-        console.log("Add this Spotify playlist URL when ready.");
+        alert("This playlist link hasn't been added yet!");
         return;
       }
 
@@ -437,7 +448,6 @@
       letterOverlay.style.display = "block";
       letterOverlay.setAttribute("aria-hidden", "false");
 
-      // Restart the opening animation each time.
       letterOverlay.classList.remove("open");
       void letterOverlay.offsetWidth;
       letterOverlay.classList.add("open");
@@ -470,7 +480,7 @@
       }
     });
 
-    /* Warn if an image filename is incorrect. */
+    /* IMAGE ERROR WARNINGS */
 
     document.querySelectorAll("img").forEach((img) => {
       img.addEventListener("error", () => {
