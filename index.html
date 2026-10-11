@@ -97,6 +97,7 @@
 
 <body>
 
+  <!-- Full-screen looping video -->
   <video autoplay muted loop playsinline>
     <source src="lv_0_20261010210354.mp4" type="video/mp4">
   </video>
@@ -106,12 +107,14 @@
     <source src="page1audio.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Full-screen light artwork -->
   <img
     class="light-image"
     src="Untitled28_20261010213949.png"
     alt="Glowing light"
   >
 
+  <!-- Invisible entrance to Page 2 -->
   <a
     href="page2.html"
     class="light-click"
@@ -122,19 +125,25 @@
     const audio = document.getElementById("background-audio");
     const enterLink = document.querySelector(".light-click");
 
-    // Try to play audio; browsers may require a user interaction.
-    function startAudio() {
-      audio.play().catch(() => {
-        // Audio can start after the visitor interacts with the page.
-      });
+    audio.volume = 0.7;
+
+    async function startAudio() {
+      try {
+        await audio.play();
+      } catch (error) {
+        console.log("Audio could not start:", error);
+      }
     }
 
-    // Attempt autoplay when the page loads.
+    // Try autoplay when the page opens
     startAudio();
 
-    // Start audio after the first interaction if autoplay was blocked.
-    document.addEventListener("pointerdown", startAudio, { once: true });
-    document.addEventListener("keydown", startAudio, { once: true });
+    // Start music after the visitor taps or interacts
+    document.addEventListener("pointerdown", startAudio);
+    document.addEventListener("keydown", startAudio);
+
+    // Try to start music when the visitor taps the entrance
+    enterLink.addEventListener("click", startAudio);
   </script>
 
 </body>
