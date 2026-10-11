@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,7 +166,7 @@
       font-family: "Lato", sans-serif;
       font-weight: 300;
       font-size: 28px;
-      line-height: 1.75;
+      line-height: 1.55;
       color: #000000;
       text-align: left;
 
@@ -193,12 +192,14 @@
       font-weight: 300;
     }
 
+    /* TIGHTER PARAGRAPH SPACING */
     #letter-copy p {
-      margin-bottom: 1.2em;
+      margin-top: 0;
+      margin-bottom: 0.45em;
     }
 
     #letter-copy .signature {
-      margin-top: 2em;
+      margin-top: 0.8em;
     }
 
     /* CLOSE BUTTON */
@@ -267,11 +268,15 @@
 </head>
 
 <body>
+  <!-- LOOPING PAGE 2 BACKGROUND AUDIO -->
+  <audio id="background-audio" loop preload="auto">
+    <source src="page2audio.mp3" type="audio/mpeg">
+  </audio>
+
   <div id="viewport">
     <main id="canvas">
 
       <!-- POND SCENE -->
-
       <section id="pond-scene" aria-label="Pond scene">
 
         <img
@@ -330,7 +335,6 @@
       </section>
 
       <!-- LETTER VIEW -->
-
       <section
         id="letter-overlay"
         aria-label="Birthday letter"
@@ -354,15 +358,12 @@
         >
 
         <!-- YOUR LETTER -->
-
         <div id="letter-text-scroll">
           <div id="letter-copy">
 
             <p>To reyrei🐻‍❄️,</p>
 
-            <p>
-              It's a prank whhwhw !! I knew ur bday was October 11😋😋
-            </p>
+            <p>It's a prank whhwhw !! I knew ur bday was October 11😋😋</p>
 
             <p>
               At first, I thought I didn't know what to say. We've been through soooo much that I can't fathom all of it into a single letter. I could never fully translate my love using words; they'll forever fall short. But here I am, trying to make something ineffable reach you. Happy Birthdayyyy my reyrei !! I hope you're happy right now. I feel like you're a gift that the universe has been plotting for me this whole time🤗🤗 I'm beyond happyy. Somehow we can talk about anything and I will never ever get sick of it. The person I trust most. I'm soooooosososos grateful that you're my first love, so special that I don't know how to begin describing it.
@@ -424,13 +425,9 @@
               I'm also excited to experience you, who I've been loving allll this time, for forever and ever. And I hope you are too. This year, I hope you discover new interests, create stuff you will be proud of, and make meaningful memories !!
             </p>
 
-            <p>
-              HAPPY BIRTHDAYAYAY🥳🥳🥳🥳
-            </p>
+            <p>HAPPY BIRTHDAYAYAY🥳🥳🥳🥳</p>
 
-            <p class="signature">
-              -🦭
-            </p>
+            <p class="signature">-🦭</p>
 
           </div>
         </div>
@@ -462,18 +459,35 @@
     window.addEventListener("resize", scaleCanvas);
     scaleCanvas();
 
+    /* LOOPING PAGE 2 BACKGROUND AUDIO */
+
+    const backgroundAudio = document.getElementById("background-audio");
+
+    function startBackgroundAudio() {
+      backgroundAudio.play().catch(() => {
+        // Some browsers block autoplay until the visitor interacts.
+      });
+    }
+
+    startBackgroundAudio();
+
+    document.addEventListener("pointerdown", startBackgroundAudio, {
+      once: true
+    });
+
+    document.addEventListener("keydown", startBackgroundAudio, {
+      once: true
+    });
+
     /* SPOTIFY PLAYLIST LINKS */
 
-    // Add your actual Spotify playlist URLs between the quotes.
-    const MIXTAPE_PLAYLIST_URL = "";
-    const MP3_PLAYLIST_URL = "";
+    const MIXTAPE_PLAYLIST_URL =
+      "https://open.spotify.com/playlist/3N8rkcx7jMCo9qakj1G6ec?si=_xjE8vqdQZ-Wvn5b6S2p8Q&utm_source=copy-link";
+
+    const MP3_PLAYLIST_URL =
+      "https://open.spotify.com/playlist/2SRUPaltiubUYpiAUaKC8P?si=f1DUneE9Q3CxKXpXbEMYkg&utm_source=copy-link";
 
     function openPlaylist(url) {
-      if (!url) {
-        alert("This playlist link hasn't been added yet!");
-        return;
-      }
-
       window.open(url, "_blank", "noopener,noreferrer");
     }
 
