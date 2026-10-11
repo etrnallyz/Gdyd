@@ -27,9 +27,7 @@
       font: inherit;
     }
 
-    /* =====================================
-       MASTER CANVAS: 2560 × 1440
-    ===================================== */
+    /* MASTER CANVAS: 2560 × 1440 */
 
     #viewport {
       position: fixed;
@@ -61,9 +59,7 @@
       -webkit-user-drag: none;
     }
 
-    /* =====================================
-       POND SCENE
-    ===================================== */
+    /* POND SCENE */
 
     #pond-scene {
       position: absolute;
@@ -75,15 +71,13 @@
       z-index: 1;
     }
 
-    /* These images remain full-canvas.
-       Do not resize or reposition them. */
-
     .scene-decoration {
       z-index: 2;
       pointer-events: none;
     }
 
     /* Invisible clickable areas */
+
     .hotspot {
       position: absolute;
       z-index: 5;
@@ -122,9 +116,7 @@
       height: 140px;
     }
 
-    /* =====================================
-       LETTER OVERLAY
-    ===================================== */
+    /* LETTER OVERLAY */
 
     #letter-overlay {
       position: absolute;
@@ -150,10 +142,7 @@
       pointer-events: none;
     }
 
-    /*
-      Text area matches your measurements:
-      X 620, Y 290, width 1260, height 940.
-    */
+    /* Letter text area */
 
     #letter-text-scroll {
       position: absolute;
@@ -202,6 +191,7 @@
     }
 
     /* Close button */
+
     #close-letter {
       position: absolute;
       z-index: 10;
@@ -227,10 +217,15 @@
       transform: scale(1.06);
     }
 
-    /* Letter opening animation */
+    /* Opening animations */
+
     @keyframes overlayFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     #letter-overlay.open #letter-paper {
@@ -264,13 +259,10 @@
   <div id="viewport">
     <main id="canvas">
 
-      <!-- =================================
-           POND SCENE
-      ================================== -->
+      <!-- POND SCENE -->
 
       <section id="pond-scene" aria-label="Pond scene">
 
-        <!-- Background with decorations -->
         <img
           id="pond-background"
           class="full-canvas"
@@ -279,7 +271,6 @@
           draggable="false"
         >
 
-        <!-- Full-canvas artwork: original positions preserved -->
         <img
           id="boat-image"
           class="full-canvas scene-decoration"
@@ -304,7 +295,8 @@
           draggable="false"
         >
 
-        <!-- Clickable regions -->
+        <!-- Clickable areas -->
+
         <button
           id="boat-hotspot"
           class="hotspot"
@@ -328,9 +320,7 @@
 
       </section>
 
-      <!-- =================================
-           LETTER VIEW
-      ================================== -->
+      <!-- LETTER VIEW -->
 
       <section
         id="letter-overlay"
@@ -338,7 +328,6 @@
         aria-hidden="true"
       >
 
-        <!-- Pond background without decorations -->
         <img
           id="letter-background"
           class="full-canvas"
@@ -347,7 +336,6 @@
           draggable="false"
         >
 
-        <!-- Letter paper artwork -->
         <img
           id="letter-paper"
           class="full-canvas"
@@ -356,7 +344,8 @@
           draggable="false"
         >
 
-        <!-- Replace sample text with your real letter -->
+        <!-- Replace this sample with your actual letter -->
+
         <div id="letter-text-scroll">
           <div id="letter-copy">
 
@@ -393,31 +382,25 @@
   </div>
 
   <script>
-    /* =====================================
-       CANVAS SCALING
-       Preserves the 2560 × 1440 proportions.
-       We'll refine mobile behavior later.
-    ===================================== */
+    /* CANVAS SCALING */
 
     const canvas = document.getElementById("canvas");
 
     function scaleCanvas() {
       const scaleX = window.innerWidth / 2560;
       const scaleY = window.innerHeight / 1440;
-      const scale = Math.min(scaleX, scaleY);
 
+      // Fill the screen in both directions.
       canvas.style.transform =
-        `translate(-50%, -50%) scale(${scale})`;
+        `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
     }
 
     window.addEventListener("resize", scaleCanvas);
     scaleCanvas();
 
-    /* =====================================
-       SPOTIFY LINKS
-       Add the real playlist URLs later.
-    ===================================== */
+    /* SPOTIFY LINKS */
 
+    // Add your real playlist URLs when ready.
     const MIXTAPE_PLAYLIST_URL = "";
     const MP3_PLAYLIST_URL = "";
 
@@ -430,13 +413,10 @@
       window.open(url, "_blank", "noopener,noreferrer");
     }
 
-    /* =====================================
-       LETTER OPEN / CLOSE
-    ===================================== */
+    /* LETTER OPEN / CLOSE */
 
     const letterOverlay = document.getElementById("letter-overlay");
     const letterScroll = document.getElementById("letter-text-scroll");
-    const letterCopy = document.getElementById("letter-copy");
 
     document.getElementById("boat-hotspot").addEventListener(
       "click",
@@ -457,7 +437,7 @@
       letterOverlay.style.display = "block";
       letterOverlay.setAttribute("aria-hidden", "false");
 
-      // Restart the opening animation every time.
+      // Restart the opening animation each time.
       letterOverlay.classList.remove("open");
       void letterOverlay.offsetWidth;
       letterOverlay.classList.add("open");
@@ -490,14 +470,16 @@
       }
     });
 
-    /* Warn if an asset filename is incorrect. */
+    /* Warn if an image filename is incorrect. */
 
     document.querySelectorAll("img").forEach((img) => {
       img.addEventListener("error", () => {
-        console.error("Image failed to load:", img.getAttribute("src"));
+        console.error(
+          "Image failed to load:",
+          img.getAttribute("src")
+        );
       });
     });
   </script>
 </body>
-  </html>
-  
+</html>
